@@ -1,19 +1,18 @@
 "use client"
 
 import ValidationText from "@/components/validationText/validationText";
-import { RootState } from "@/state/RTK/store";
+import { AppDispatch, RootState } from "@/state/RTK/store";
+import { todoAction } from "@/state/RTK/todo/todoAction";
 import { resetValidation } from "@/state/RTK/validation/validationSlice";
+import { dd } from "@/utils/debug/dd";
 import { validateInput } from "@/utils/validation";
 import { Add, Close } from "@mui/icons-material";
 import { FormEvent, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Home() {
-  const dispatch = useDispatch()
-  useEffect(() => {
-
-  }, [])
-
+  const dispatch = useDispatch<AppDispatch>()
+  const mainState = useSelector((state: RootState) => state.todo)
 
   const { validation } = useSelector((state: RootState) => state.validation)
 
@@ -29,9 +28,12 @@ export default function Home() {
       objValidationRule: validateRule,
       dispatch: dispatch,
     });
-
-
   }
+
+
+  useEffect(() => {
+    dispatch(todoAction({ type: "list" }))
+  }, [])
   return (
     <main className="h-screen">
       <div className="flex bg-blue-500  text-white font-bold h-56 p-4 items-end 
@@ -52,6 +54,7 @@ export default function Home() {
         </div>
       </div>
       <div className="p-3">
+        {dd(mainState.arr_data)}
         Helo
       </div>
 
