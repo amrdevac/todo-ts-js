@@ -33,20 +33,24 @@ const initialState: initType = {
   loadingText: "",
 };
 
-
-export const triggerConfirmResult = createAsyncThunk<void,boolean>("triggerConfirmResult", async(param,thunkAPI)=>{
-  const state = <RootState>thunkAPI.getState()
-  const arrAction = state.confirmDialog.action;
-  if(param){
-    const runAction = async () =>{
-      for(const actionFunc of arrAction ){
-        thunkAPI.dispatch(slice.actions.setLoadingText(actionFunc.loadingText))
-        await actionFunc.run()
-      }
+export const triggerConfirmResult = createAsyncThunk<void, boolean>(
+  "triggerConfirmResult",
+  async (param, thunkAPI) => {
+    const state = <RootState>thunkAPI.getState();
+    const arrAction = state.confirmDialog.action;
+    if (param) {
+      const runAction = async () => {
+        for (const actionFunc of arrAction) {
+          thunkAPI.dispatch(
+            slice.actions.setLoadingText(actionFunc.loadingText ?? "")
+          );
+          await actionFunc.run();
+        }
+      };
+      runAction();
     }
-    runAction()
   }
-})
+);
 
 export const slice = createSlice({
   name: "confirmDialog",
@@ -68,10 +72,10 @@ export const slice = createSlice({
 
       state.finishText = payload.finishText;
     },
-    setLoadingText : (state, action:PayloadAction<string>) =>{
-      console.log("setLoadingText",action.payload)
-      state.loadingText = action.payload
-    }
+    setLoadingText: (state, action: PayloadAction<string>) => {
+      console.log("setLoadingText", action.payload);
+      state.loadingText = action.payload;
+    },
   },
 });
 export const { confirmDialog } = slice.actions;
