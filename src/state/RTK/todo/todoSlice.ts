@@ -5,13 +5,27 @@ import {
 } from "@reduxjs/toolkit";
 import { todoBuilder } from "./todoBuilder";
 import { todoAction } from "./todoAction";
-import { RootState } from "../store";
 
 interface todoFormSetterType {
   column: keyof initType["form"];
   value: string;
 }
-interface initType {
+
+
+interface basicResponse {
+  response_status: boolean,
+  response_message: string,
+}
+
+export interface xhrResponseArrData extends basicResponse {
+  data: {
+    response_data: {
+      total: number,
+      data: initType["arr_data"]
+    },
+  },
+}
+export interface initType {
   form: {
     title: string;
     description: string;
@@ -19,10 +33,16 @@ interface initType {
   arr_data: {
     title: string;
     description: string;
+    id: string,
   }[];
   request: {
     filter: string;
   };
+  xhr: {
+    isLoading: boolean,
+    isError: boolean,
+    responseMessage: string,
+  }
 }
 
 const initialState: initType = {
@@ -34,6 +54,11 @@ const initialState: initType = {
   request: {
     filter: "",
   },
+  xhr: {
+    isError: false,
+    isLoading: false,
+    responseMessage: "",
+  }
 };
 
 export const slice = createSlice({
@@ -45,7 +70,7 @@ export const slice = createSlice({
       state.form[objColumn.column] = objColumn.value;
     },
   },
-  extraReducers: (builder: ActionReducerMapBuilder<RootState>) => {
+  extraReducers: (builder: ActionReducerMapBuilder<initType>) => {
     todoBuilder(builder, todoAction);
   },
 });
