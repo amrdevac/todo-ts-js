@@ -38,8 +38,15 @@ export const triggerConfirmResult = createAsyncThunk<void, boolean>(
   async (param, thunkAPI) => {
     const state = <RootState>thunkAPI.getState();
     const arrAction = state.confirmDialog.action;
+    const loadingModal = document.getElementById(
+      "loading-modal"
+    ) as HTMLDialogElement;
+
+    const finishModal = document.getElementById(
+      "finish-modal"
+    ) as HTMLDialogElement;
     if (param) {
-      (document.getElementById("loading-modal") as HTMLDialogElement).showModal();
+      loadingModal.showModal();
       const runAction = async () => {
         for (const actionFunc of arrAction) {
           thunkAPI.dispatch(
@@ -48,7 +55,9 @@ export const triggerConfirmResult = createAsyncThunk<void, boolean>(
           await actionFunc.run();
         }
       };
-      runAction();
+      await runAction();
+      loadingModal.close();
+      finishModal.showModal();
     }
   }
 );

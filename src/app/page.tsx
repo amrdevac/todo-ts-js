@@ -1,6 +1,6 @@
 "use client";
 
-import Confirmation2 from "@/components/dialog/confirmation2";
+import Confirmation from "@/components/dialog/confirmation";
 import ValidationText from "@/components/validationText/validationText";
 import { confirmDialog } from "@/state/RTK/confirmDialog/confirmDialogSlice";
 import { AppDispatch, RootState } from "@/state/RTK/store";
@@ -33,17 +33,31 @@ export default function Home() {
 
     dispatch(
       confirmDialog({
-        confirmText: "Menambahkan data todo ini ?",
-        finishText: "Berhasil menambahakan data todo",
-        btnCancelText: "Batalkan",
-        btnOkText: "Simpan",
-        loadingText: "Memuat data",
+        confirmText: "Are you sure wanna save this data ?",
+        finishText: "Data todo save successfully",
+        btnCancelText: "Cancel",
+        btnOkText: "Save",
         action: [
           {
+            rootSlice: false,
+            run: () =>
+              (
+                document.getElementById("form-input-modal") as HTMLDialogElement
+              ).close(),
+          },
+          {
+            loadingText: "Process inserting data",
             rootSlice: "todo",
             errorTextState: "responseMessage",
             responseTextState: "responseMessage",
             run: () => dispatch(todoAction({ type: "add" })),
+          },
+          {
+            loadingText: "Re-loading data",
+            rootSlice: "todo",
+            errorTextState: "responseMessage",
+            responseTextState: "responseMessage",
+            run: () => dispatch(todoAction({ type: "list" })),
           },
         ],
       })
@@ -56,7 +70,6 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(todoAction({ type: "list" }));
-
     const handleScroll = () => {
       if (targetElementRef.current) {
         const scrollY = targetElementRef.current.scrollTop;
@@ -65,25 +78,25 @@ export default function Home() {
         } else {
           setSticky(false);
         }
-        console.log("Scrolled! Scroll Y:", scrollY);
       }
     };
 
-    if (targetElementRef.current) {
-      targetElementRef.current.addEventListener("scroll", handleScroll);
+    const currentTargetElement = targetElementRef.current;
+
+    if (currentTargetElement) {
+      currentTargetElement.addEventListener("scroll", handleScroll);
     }
 
-    // Clean up the event listener on component unmount
     return () => {
-      if (targetElementRef.current) {
-        targetElementRef.current.removeEventListener("scroll", handleScroll);
+      if (currentTargetElement) {
+        currentTargetElement.removeEventListener("scroll", handleScroll);
       }
     };
   }, []);
   return (
     <main className="h-screen overflow-y-auto" ref={targetElementRef}>
-      <Confirmation2 />
-      
+      <Confirmation />
+
       <div
         className={`
       flex absolute bg-blue-500  text-white font-bold overflow-hidden h-0 p-4 items-end
@@ -171,25 +184,27 @@ export default function Home() {
               />
             </div>
             <ValidationText inputName="description" />
-            <div className="modal-action">
-              <button
-                type="submit"
-                className="p-3 rounded-lg  bg-blue-700 text-white"
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                className="btn"
-                onClick={() => {
-                  const modal = document.getElementById(
-                    "form-input-modal"
-                  ) as HTMLDialogElement;
-                  modal.close();
-                }}
-              >
-                Close
-              </button>
+            <div className="modal-action  ">
+              <div className="flex flex-col sm:flex-row items-center gap-4 justify-between sm:justify-end w-full">
+                <button
+                  type="submit"
+                  className="p-3 rounded-lg  bg-blue-700 text-white w-full sm:w-min"
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  className="btn w-full sm:w-min"
+                  onClick={() => {
+                    const modal = document.getElementById(
+                      "form-input-modal"
+                    ) as HTMLDialogElement;
+                    modal.close();
+                  }}
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </form>
         </div>

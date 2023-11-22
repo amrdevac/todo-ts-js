@@ -2,11 +2,13 @@
   "name": "todo-w-ts",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://amrdevac.github.io/todo-ts-js/",
   "scripts": {
     "dev": "next dev -p 9000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "next build && gh-pages -d out -b main"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -17,6 +19,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.6.1",
     "daisyui": "latest",
+    "gh-pages": "^6.1.0",
     "next": "14.0.2",
     "react": "^18",
     "react-dom": "^18",
