@@ -39,6 +39,7 @@ export const triggerConfirmResult = createAsyncThunk<void, boolean>(
     const state = <RootState>thunkAPI.getState();
     const arrAction = state.confirmDialog.action;
     if (param) {
+      (document.getElementById("loading-modal") as HTMLDialogElement).showModal();
       const runAction = async () => {
         for (const actionFunc of arrAction) {
           thunkAPI.dispatch(
@@ -71,9 +72,12 @@ export const slice = createSlice({
       }
 
       state.finishText = payload.finishText;
+      const modal = document.getElementById(
+        "confirm-modal"
+      ) as HTMLDialogElement;
+      modal.showModal();
     },
     setLoadingText: (state, action: PayloadAction<string>) => {
-      console.log("setLoadingText", action.payload);
       state.loadingText = action.payload;
     },
   },
