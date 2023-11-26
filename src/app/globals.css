@@ -7,7 +7,7 @@
 }
 
 .btn-add {
-  @apply text-white transition-transform transform focus:outline-none focus:ring focus:border-blue-300 bg-blue-700 p-2 rounded-full absolute bottom-14 right-5
+  @apply text-white transition-transform transform focus:outline-none focus:ring focus:border-blue-300 bg-blue-700 p-2 rounded-full absolute bottom-16 right-5
 }
 .input-control {
   @apply w-full flex flex-col gap-2
