@@ -10,7 +10,7 @@
   @apply text-white transition-transform transform focus:outline-none focus:ring focus:border-blue-300 bg-blue-700 p-2 rounded-full absolute bottom-16 right-5
 }
 .input-control {
-  @apply w-full flex flex-col gap-2
+  @apply w-full flex flex-col gap-1
 }
 /* .input {
   @apply w-full  p-2 border border-gray-300 rounded-lg overflow-hidden focus:ring-1 focus:outline-none

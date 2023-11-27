@@ -5,7 +5,7 @@ import ValidationText from "@/components/validationText/validationText";
 import { confirmDialog } from "@/state/RTK/confirmDialog/confirmDialogSlice";
 import { AppDispatch, RootState } from "@/state/RTK/store";
 import { todoAction } from "@/state/RTK/todo/todoAction";
-import { todoFormSetter } from "@/state/RTK/todo/todoSlice";
+import { todoFormReset, todoFormSetter } from "@/state/RTK/todo/todoSlice";
 import { resetValidation } from "@/state/RTK/validation/validationSlice";
 import { validateInput } from "@/utils/validation";
 import { Add, Close } from "@mui/icons-material";
@@ -59,6 +59,10 @@ export default function Home() {
             responseTextState: "responseMessage",
             run: () => dispatch(todoAction({ type: "list" })),
           },
+          {
+            rootSlice: false,
+            run: () => dispatch(todoFormReset()),
+          },
         ],
       })
     );
@@ -101,9 +105,8 @@ export default function Home() {
         className={`
       flex absolute bg-blue-500  text-white font-bold overflow-hidden h-0 p-4 items-end
        justify-between left-0 right-0
-      transition-all duration-300 ${
-        !isSticky ? "min-h-min opacity-0" : "h-16"
-      }  `}
+      transition-all duration-300 ${!isSticky ? "min-h-min opacity-0" : "h-16"
+          }  `}
       >
         <div className="text-2xl">Todo App</div>
       </div>
@@ -148,21 +151,21 @@ export default function Home() {
           <h3 className="font-bold text-lg">Add todo</h3>
           <form
             onSubmit={formSubmit}
-            className="flex flex-col gap-4 w-full mt-4 p-4"
+            className="flex flex-col gap-3 w-full mt-4 p-4"
           >
             <div className="input-control">
               <label>Title</label>
               <input
                 type="text"
+                value={mainState.form.title}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   dispatch(
                     todoFormSetter({ column: "title", value: e.target.value })
                   );
                 }}
-                className={`${
-                  "title" in validation ? "border border-red-500" : ""
-                }   
-                input input-md input-bordered dark:text-black`}
+                className={`${"title" in validation ? "border border-red-500" : ""
+                  }   
+                input input-sm input-bordered dark:text-black`}
               />
               <ValidationText inputName="title" />
             </div>
@@ -170,6 +173,7 @@ export default function Home() {
               <label>Description</label>
               <input
                 type="text"
+                value={mainState.form.description}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   dispatch(
                     todoFormSetter({
@@ -180,25 +184,26 @@ export default function Home() {
                 }}
                 className={`
               ${"description" in validation ? "border border-red-500" : ""}
-              input input-md input-bordered`}
+              input input-sm input-bordered`}
               />
             </div>
             <ValidationText inputName="description" />
-            <div className="modal-action  ">
-              <div className="flex flex-col sm:flex-row items-center gap-4 justify-between sm:justify-end w-full">
+            <div className="modal-action my-0 ">
+              <div className="flex items-center gap-4 justify-between  w-full">
                 <button
                   type="submit"
-                  className="p-3 rounded-lg  bg-blue-700 text-white w-full sm:w-min"
+                  className="p-3 rounded-lg  bg-blue-700 text-white w-full sm:w-min "
                 >
                   Save
                 </button>
                 <button
                   type="button"
-                  className="btn w-full sm:w-min"
+                  className="btn  "
                   onClick={() => {
                     const modal = document.getElementById(
                       "form-input-modal"
                     ) as HTMLDialogElement;
+                    dispatch(todoFormReset())
                     modal.close();
                   }}
                 >

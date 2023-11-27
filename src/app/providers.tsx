@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
         <Provider store={store}>
-            <div className="max-w-sm border shadow-md mx-auto relative">
+            <div className="max-w-md border shadow-md mx-auto relative">
                 {children}
             </div>
         </Provider>

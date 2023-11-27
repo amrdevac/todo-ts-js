@@ -69,10 +69,14 @@ export const slice = createSlice({
       const objColumn = action.payload;
       state.form[objColumn.column] = objColumn.value;
     },
+    todoFormReset: (state, action : PayloadAction<void>) => {
+      state.form.description = "";
+      state.form.title = "";
+    },
   },
   extraReducers: (builder: ActionReducerMapBuilder<initType>) => {
     todoBuilder(builder, todoAction);
   },
 });
-export const { todoFormSetter } = slice.actions;
+export const { todoFormSetter, todoFormReset } = slice.actions;
 export default slice.reducer;

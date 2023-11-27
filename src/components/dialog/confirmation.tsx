@@ -14,7 +14,7 @@ export default function Confirmation() {
       <FinishDialog />
       <dialog id="confirm-modal" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Konfirmasi</h3>
+          <h3 className="font-bold text-lg">Confirmation</h3>
           <p className="py-4">{mainState.confirmText}</p>
           <div className="modal-action">
             <form method="dialog" className="flex space-x-2">
