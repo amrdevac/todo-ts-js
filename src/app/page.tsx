@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from "@/state/RTK/store";
 import { todoAction } from "@/state/RTK/todo/todoAction";
 import { todoFormReset, todoFormSetter } from "@/state/RTK/todo/todoSlice";
 import { resetValidation } from "@/state/RTK/validation/validationSlice";
+import { dd } from "@/utils/debug/dd";
 import { validateInput } from "@/utils/validation";
 import { Add, Close } from "@mui/icons-material";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
@@ -71,6 +72,7 @@ export default function Home() {
   const [isSticky, setSticky] = useState(false);
 
   const targetElementRef = useRef<HTMLDivElement | null>(null);
+  const integerArray = [1, 2, 3, 4, 5];
 
   useEffect(() => {
     dispatch(todoAction({ type: "list" }));
@@ -97,18 +99,19 @@ export default function Home() {
       }
     };
   }, []);
+
   return (
     <main className="h-screen overflow-y-auto" ref={targetElementRef}>
       <Confirmation />
-
       <div
         className={`
       flex absolute bg-blue-500  text-white font-bold overflow-hidden h-0 p-4 items-end
        justify-between left-0 right-0
-      transition-all duration-300 ${!isSticky ? "min-h-min opacity-0" : "h-16"
-          }  `}
+      transition-all duration-300 ${
+        !isSticky ? "min-h-min opacity-0" : "h-14"
+      }  `}
       >
-        <div className="text-2xl">Todo App</div>
+        <div className="text-xl">Todo App</div>
       </div>
       <div
         className={`
@@ -135,6 +138,17 @@ export default function Home() {
           </button>
         </div>
       </div>
+      {mainState.xhr.isLoading &&
+        integerArray.map((key) => {
+          return (
+            <div key={key}>
+              <div className="m-3 rounded-md border border-gray-300  h-20  p-3 flex flex-col gap-4 ">
+                <div className="w-40 bg-gray-300 animate-pulse h-6 -z-10"></div>
+                <div className="w-full bg-gray-300 animate-pulse h-6 -z-10"></div>
+              </div>
+            </div>
+          );
+        })}
       <div className="p-3">
         {mainState.arr_data &&
           Object.entries(mainState.arr_data).map(([key, value]) => {

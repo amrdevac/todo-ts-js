@@ -56,7 +56,7 @@ const initialState: initType = {
   },
   xhr: {
     isError: false,
-    isLoading: false,
+    isLoading: true,
     responseMessage: "",
   }
 };

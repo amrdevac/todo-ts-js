@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 
-const baseURL = process.env.BASE_URL ?? "";
+export const dynamic = "force-static";
+const baseURL = process.env.NEXT_BASE_URL ?? "";
 
 interface payloadType {
   title: string;
